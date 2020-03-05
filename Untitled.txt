@@ -1,0 +1,40 @@
+I found example for undefined, number, object, function. but i was suprise the by some of the answers i get.
+
+1. const getRandomNum = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+typeof(getRandomNum) // function.
+typeof(getRandomNum()) // number
+
+2. const setMessage = (msg, color) => {
+  let message = {};
+  message.color = color;
+  message.textContent = msg;
+}
+typeof( setMessage ) // function.
+typeof( setMessage('me', 'red') )// undefind.
+
+3. const selectors = {
+    itemList: '#item-list',
+    addBtn: '.add-btn',
+    updateBtn: '.update-btn',
+    deleteBtn: '.delete-btn',
+    backBtn: '.back-btn',
+    itemNameInput: '#item-name',
+    itemCaloriesInput: '#item-calories',
+    totalCalories: '.total-calories'
+  }
+const getSelectors = () => selectors;
+
+typeof( getSelectors )// function.
+typeof(getSelectors())// object.
+
+it won't work becase date is not a data type.
+
+null
+
+i don't think there is any thing similarly interesting
+
+this module was greate i really learnt a lot from it. 
+
+Nandom
