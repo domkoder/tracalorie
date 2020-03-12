@@ -15,7 +15,7 @@ const StorageController = (function() {
         localStorage.setItem('items', JSON.stringify(items));
       } else {
         // Get what is already in local storage
-        items = JSON.parse(localStorage.getItem('items'));
+        items = StorageController.getItemsFromStorage();
         // Push new item
         items.push(item);
         // Reset local storage
@@ -30,6 +30,27 @@ const StorageController = (function() {
         items = JSON.parse(localStorage.getItem('items'));
       }
       return items;
+    },
+    updateItemStorage: updatedItem => {
+      let items = StorageController.getItemsFromStorage();
+      items.forEach((item, index) => {
+        if (updatedItem.id === item.id) {
+          items.splice(index, 1, updatedItem);
+        }
+      });
+      localStorage.setItem('items', JSON.stringify(items));
+    },
+    deleteItemFromStorage: id => {
+      let items = StorageController.getItemsFromStorage();
+      items.forEach((item, index) => {
+        if (id === item.id) {
+          items.splice(index, 1);
+        }
+      });
+      localStorage.setItem('items', JSON.stringify(items));
+    },
+    clearItemsFromStorage: function() {
+      localStorage.removeItem('items');
     }
   };
 })();
@@ -317,6 +338,8 @@ const App = (function(ItemController, StorageController, UIController) {
     const input = UIController.getItemInput();
     // Update item
     const updatedItem = ItemController.updateItem(input.name, input.calories);
+    // Update local storage
+    StorageController.updateItemStorage(updatedItem);
     // Update UI
     UIController.updateListItem(updatedItem);
     // Get total calories
@@ -331,6 +354,8 @@ const App = (function(ItemController, StorageController, UIController) {
   const itemDeleteSubmit = event => {
     //Get current item
     const currentItem = ItemController.getCurrentItem();
+    // Delete from local storage
+    StorageController.deleteItemFromStorage(currentItem.id);
     // Delete from data structure
     ItemController.deleteItem(currentItem.id);
     // Remove item from UI
@@ -347,6 +372,8 @@ const App = (function(ItemController, StorageController, UIController) {
   const clearAllItemsClick = () => {
     // Delete all items from data structure
     ItemController.clearAllItems();
+    // Clear from local storage
+    StorageController.clearItemsFromStorage();
     // Get total calories
     const totalCalories = ItemController.getTotalCalories();
     // Add total calories to the UI
